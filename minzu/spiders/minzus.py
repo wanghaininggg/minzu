@@ -32,6 +32,9 @@ class MinzusSpider(scrapy.Spider):
 
     def parseDetail(self, response):
 
+       leibie = response.xpath("//*[@id='breadcrumb']/p/a[3]/text()").extract()
+       minzuName = leibie[0][:-2]
+       minzuType = leibie[0][-2:]
        content = response.xpath("//div[5]/p/text()").extract()
        text1 = []
        for str in content:
@@ -39,7 +42,9 @@ class MinzusSpider(scrapy.Spider):
        content = ''.join(text1)
 
        item_loader = MinzuItemLoader(item=MinzuItem(), response=response)
-       item_loader.add_xpath("title","//h1/text()")
+       item_loader.add_value("name", [minzuName])
+       item_loader.add_value("type", [minzuType])
+       item_loader.add_xpath("title", "//h1/text()")
        item_loader.add_value("content", [content])
        minzu_item = item_loader.load_item()
        yield minzu_item

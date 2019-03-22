@@ -19,5 +19,7 @@ class MinzuItemLoader(ItemLoader):
 
 class MinzuItem(scrapy.Item):
 
+    name = scrapy.Field()
+    type = scrapy.Field()
     title = scrapy.Field()
     content = scrapy.Field()

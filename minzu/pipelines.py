@@ -13,6 +13,7 @@ class MinzuPipeline(object):
     def process_item(self, item, spider):
         return item
 
+
 class MysqlTwistedPipLine(object):
     def __init__(self, dbpool):
         self.dbpool = dbpool
@@ -21,11 +22,11 @@ class MysqlTwistedPipLine(object):
     def from_settings(cls, settings):
         dbparms = dict(
             host=settings["MYSQL_HOST"],
-            db = settings["MYSQL_DBNAME"],
-            user = settings["MYSQL_USER"],
-            passwd = settings["MYSQL_PASSWORD"],
-            charset = 'utf8',
-            cursorclass = MySQLdb.cursors.DictCursor,
+            db=settings["MYSQL_DBNAME"],
+            user=settings["MYSQL_USER"],
+            passwd=settings["MYSQL_PASSWORD"],
+            charset='utf8',
+            cursorclass=MySQLdb.cursors.DictCursor,
             use_unicode=True
         )
         dbpool = adbapi.ConnectionPool("MySQLdb", **dbparms)
@@ -40,6 +41,6 @@ class MysqlTwistedPipLine(object):
 
     def do_insert(self, cursor, item):
         insert_sql = """
-            insert into minzuxinxi(title, content) values(%s, %s)
+            insert into minzuxinxi(mzname, mztype, title, content) values(%s, %s, %s, %s)
         """
-        cursor.execute(insert_sql, (item['title'], item['content']))
+        cursor.execute(insert_sql, (item['name'], item['type'], item['title'], item['content']))
